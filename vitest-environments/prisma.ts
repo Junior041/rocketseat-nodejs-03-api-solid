@@ -1,10 +1,26 @@
+import "dotenv/config";
+import { randomUUID } from "crypto";
 import { Environment } from "vitest";
+import { execSync } from "node:child_process";
+function generateDatabaseURL(schema: string){
+	if (!process.env.DATABASE_URL) {
+		throw new Error("Please Provide a DATABASE_URL environment variable");
+	}
+	const url = new URL(process.env.DATABASE_URL);
+	url.searchParams.set("schema", schema);
+	return url.toString();
+}
 
 export default <Environment>{
 	name: "prisma",
 	transformMode: "ssr",
 	async setup() {
-		console.log("Setup");
+		const schema  = randomUUID();
+		const databaseUrl = generateDatabaseURL(schema);
+		process.env.DATABASE_URL = databaseUrl;
+
+		execSync("yarn prisma migrate deploy");
+
 		return {
 			async teardown() {
 				console.log("Teardown");
