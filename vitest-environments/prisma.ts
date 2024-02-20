@@ -2,6 +2,10 @@ import "dotenv/config";
 import { randomUUID } from "crypto";
 import { Environment } from "vitest";
 import { execSync } from "node:child_process";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 function generateDatabaseURL(schema: string){
 	if (!process.env.DATABASE_URL) {
 		throw new Error("Please Provide a DATABASE_URL environment variable");
@@ -23,7 +27,7 @@ export default <Environment>{
 
 		return {
 			async teardown() {
-				console.log("Teardown");
+				await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
 			},
 		};
 	},
