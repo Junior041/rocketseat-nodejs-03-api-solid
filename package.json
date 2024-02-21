@@ -30,10 +30,12 @@
     "@fastify/jwt": "8.0.0",
     "@prisma/client": "5.9.1",
     "@types/bcryptjs": "2.4.6",
+    "@types/supertest": "6.0.2",
     "bcryptjs": "2.4.3",
     "dayjs": "1.11.10",
     "dotenv": "16.4.1",
     "fastify": "4.26.0",
+    "supertest": "6.3.4",
     "zod": "3.22.4"
   }
 }
